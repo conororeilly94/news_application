@@ -7,4 +7,10 @@ from .models import Main
 def home(request):
 
 
-    return render(request, 'home.html')
+    return render(request, 'front/home.html')
+
+
+def about(request):
+    
+
+    return render(request, 'front/about.html')
