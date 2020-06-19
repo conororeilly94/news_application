@@ -27,6 +27,8 @@ def news_add(request):
     year = now.year
     month = now.month
     day = now.day
+    hour = now.hour
+    minute = now.minute
 
     if len(str(day)) == 1:
         day = "0" + str(day)
@@ -34,7 +36,7 @@ def news_add(request):
         month = "0" + str(month)
 
     today = str(year) + "/" + str(month) + "/" + str(day)
-    time = str(now.hour) + ":" + str(now.minute)
+    time = str(hour) + ":" + str(minute)
 
     
     if request.method == 'POST':
@@ -66,11 +68,19 @@ def news_add(request):
                     return redirect('news_list')
                 
                 else:
+
+                    fs = FileSystemStorage()
+                    fs.delete(filename)
+
                     error = "Your File is Bigger than 5MB"
                     return render(request, 'back/error.html', {'error':error})
 
 
             else:
+
+                fs = FileSystemStorage()
+                fs.delete(filename)
+
                 error = "Your File is not Supported"
                 return render(request, 'back/error.html', {'error':error})
         
@@ -81,3 +91,23 @@ def news_add(request):
 
 
     return render(request, 'back/news_add.html')
+
+
+def news_delete(request, pk):
+
+    try:
+
+        b = News.objects.get(pk=pk)
+
+        fs = FileSystemStorage()
+        fs.delete(b.pic)
+
+        b.delete()
+
+    except:
+
+        error = "Something Went Wrong"
+        return render(request, 'back/error.html', {'error':error})
+
+
+    return redirect('news_list')
