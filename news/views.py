@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import News
 from main.models import Main
 from django.core.files.storage import FileSystemStorage
+import datetime
 
 # Create your views here. ACTIONS
 
@@ -19,6 +20,22 @@ def news_list(request):
     return render(request, 'back/news_list.html', {'news':news})
 
 def news_add(request):
+
+    
+    now = datetime.datetime.now()
+
+    year = now.year
+    month = now.month
+    day = now.day
+
+    if len(str(day)) == 1:
+        day = "0" + str(day)
+    if len(str(month)) == 1:
+        month = "0" + str(month)
+
+    today = str(year) + "/" + str(month) + "/" + str(day)
+    time = str(now.hour) + ":" + str(now.minute)
+
     
     if request.method == 'POST':
 
@@ -44,7 +61,7 @@ def news_add(request):
 
                 if myfile.size < 5000000 :
 
-                    b = News(name=newstitle, short_txt=newstxtshort, body=newstxt, date="2020", picurl=url, pic=filename, writer="-", catname=newscat, catid=0, views=0)
+                    b = News(name=newstitle, short_txt=newstxtshort, body=newstxt, date=today, picurl=url, pic=filename, writer="-", catname=newscat, catid=0, views=0, time=time)
                     b.save()
                     return redirect('news_list')
                 
