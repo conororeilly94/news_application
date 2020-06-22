@@ -5,6 +5,7 @@ from django.core.files.storage import FileSystemStorage
 import datetime
 from subcat.models import SubCat
 
+
 # Create your views here. ACTIONS
 
 def news_detail(request, word):
@@ -115,3 +116,93 @@ def news_delete(request, pk):
 
 
     return redirect('news_list')
+
+
+def news_edit(request, pk):
+
+    if len(News.objects.filter(pk=pk)) == 0:
+        
+        error = "News Not Found"
+        return render(request, 'back/error.html', {'error':error})
+
+    news = News.objects.get(pk=pk)
+    cat = SubCat.objects.all()
+
+    if request.method == 'POST':
+    
+        newstitle = request.POST.get('newstitle')
+        newscat = request.POST.get('newscat')
+        newstxtshort = request.POST.get('newstxtshort')
+        newstxt = request.POST.get('newstxt')
+        newsid = request.POST.get('newscat')
+
+
+        if newstitle == "" or newstxtshort == "" or newstxt == "" or newscat == "":
+            error = "All Fields are Required"
+            return render(request, 'back/error.html', {'error': error})
+
+
+        try:
+
+            myfile = request.FILES['myfile']
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            url = fs.url(filename)
+
+            if str(myfile.content_type).startswith('image'):
+
+                if myfile.size < 5000000 :
+
+                    newsname = SubCat.objects.get(pk=newsid).name
+
+                    b = News.objects.get(pk=pk)
+
+                    fss = FileSystemStorage()
+                    fss.delete(b.pic)
+
+                    b.name = newstitle
+                    b.short_txt = newstxtshort
+                    b.body = newstxt
+                    b.pic = filename
+                    b.picurl = url
+                    b.catname = newsname
+                    b.catid = newsid
+
+                    b.save()
+
+                    return redirect('news_list')
+                
+                else:
+
+                    fs = FileSystemStorage()
+                    fs.delete(filename)
+
+                    error = "Your File is Bigger than 5MB"
+                    return render(request, 'back/error.html', {'error':error})
+
+
+            else:
+
+                fs = FileSystemStorage()
+                fs.delete(filename)
+
+                error = "Your File is not Supported"
+                return render(request, 'back/error.html', {'error':error})
+        
+        except :
+            
+            newsname = SubCat.objects.get(pk=newsid).name
+
+            b = News.objects.get(pk=pk)
+
+            b.name = newstitle
+            b.short_txt = newstxtshort
+            b.body = newstxt
+            b.catname = newsname
+            b.catid = newsid
+
+            b.save()
+
+            return redirect('news_list')
+
+    return render(request, 'back/news_edit.html', {'pk':pk, 'news':news, 'cat':cat})
