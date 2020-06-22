@@ -7,6 +7,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('main.urls')), # Root
     url(r'', include('news.urls')),
+    url(r'', include('cat.urls')),
+    url(r'', include('subcat.urls')),
 ]
 
 if settings.DEBUG:
