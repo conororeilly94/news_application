@@ -4,6 +4,7 @@ from main.models import Main
 from django.core.files.storage import FileSystemStorage
 import datetime
 from subcat.models import SubCat
+from cat.models import Cat
 
 
 # Create your views here. ACTIONS
@@ -68,9 +69,17 @@ def news_add(request):
                 if myfile.size < 5000000 :
 
                     newsname = SubCat.objects.get(pk=newsid).name
+                    ocatid = SubCat.objects.get(pk=newsid).catid
 
-                    b = News(name=newstitle, short_txt=newstxtshort, body=newstxt, date=today, picurl=url, pic=filename, writer="-", catname=newsname, catid=newsid, views=0, time=time)
+                    b = News(name=newstitle, short_txt=newstxtshort, body=newstxt, date=today, picurl=url, pic=filename, writer="-", catname=newsname, catid=newsid, views=0, time=time, ocatid=ocatid)
                     b.save()
+
+                    count = len(News.objects.filter(ocatid=ocatid))
+
+                    b = Cat.objects.get(pk=ocatid)
+                    b.count = count
+                    b.save()
+
                     return redirect('news_list')
                 
                 else:
@@ -107,7 +116,17 @@ def news_delete(request, pk):
         fs = FileSystemStorage()
         fs.delete(b.pic)
 
+        ocatid = News.objects.get(pk=pk).ocatid
+
         b.delete()
+
+
+        count = len(News.objects.filter(ocatid=ocatid))
+
+        m = Cat.objects.get(pk=ocatid)
+        m.count = count
+        m.save()
+
 
     except:
 
