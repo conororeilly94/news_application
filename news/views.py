@@ -12,9 +12,30 @@ from cat.models import Cat
 def news_detail(request, word):
     
     site = Main.objects.get(pk=2)
-    news = News.objects.filter(name=word)
+    news = News.objects.all().order_by('-pk')
+    cat = Cat.objects.all()
+    subcat = SubCat.objects.all()
+    lastnews = News.objects.all().order_by('-pk')[:3]
 
-    return render(request, 'front/news_detail.html', {'news':news, 'site':site})
+    shownews = News.objects.filter(name=word)
+    popnews = News.objects.all().order_by('-views')
+    popnews2 = News.objects.all().order_by('-views')[:3]
+
+    tagname = News.objects.get(name=word).tag
+    tag = tagname.split(',')
+    
+
+    try:
+        mynews = News.objects.get(name=word)
+        mynews.views = mynews.views + 1
+        mynews.save()
+
+    except:
+
+        print("Can Not Add Show")
+    
+
+    return render(request, 'front/news_detail.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'shownews':shownews, 'popnews':popnews, 'popnews2':popnews2, 'tag':tag})
 
 def news_list(request):
 
@@ -59,6 +80,7 @@ def news_add(request):
         newstxtshort = request.POST.get('newstxtshort')
         newstxt = request.POST.get('newstxt')
         newsid = request.POST.get('newscat')
+        tag = request.POST.get('tag')
 
 
         if newstitle == "" or newstxtshort == "" or newstxt == "" or newscat == "":
@@ -80,7 +102,7 @@ def news_add(request):
                     newsname = SubCat.objects.get(pk=newsid).name
                     ocatid = SubCat.objects.get(pk=newsid).catid
 
-                    b = News(name=newstitle, short_txt=newstxtshort, body=newstxt, date=today, picurl=url, pic=filename, writer="-", catname=newsname, catid=newsid, views=0, time=time, ocatid=ocatid)
+                    b = News(name=newstitle, short_txt=newstxtshort, body=newstxt, date=today, picurl=url, pic=filename, writer="-", catname=newsname, catid=newsid, views=0, time=time, ocatid=ocatid, tag=tag)
                     b.save()
 
                     count = len(News.objects.filter(ocatid=ocatid))
@@ -173,6 +195,7 @@ def news_edit(request, pk):
         newstxtshort = request.POST.get('newstxtshort')
         newstxt = request.POST.get('newstxt')
         newsid = request.POST.get('newscat')
+        tag = request.POST.get('tag')
 
 
         if newstitle == "" or newstxtshort == "" or newstxt == "" or newscat == "":
@@ -205,6 +228,7 @@ def news_edit(request, pk):
                     b.picurl = url
                     b.catname = newsname
                     b.catid = newsid
+                    b.tag = tag
 
                     b.save()
 
@@ -238,6 +262,7 @@ def news_edit(request, pk):
             b.body = newstxt
             b.catname = newsname
             b.catid = newsid
+            b.tag = tag
 
             b.save()
 
