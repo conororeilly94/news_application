@@ -5,12 +5,22 @@ from cat.models import Cat
 
 def subcat_list(request):
 
+    # Login Check Start
+    if not request.user.is_authenticated:
+        return redirect('mylogin')
+    # Login Check End
+
     subcat = SubCat.objects.all()
 
     return render(request, 'back/subcat_list.html', {'subcat': subcat})
 
 
 def subcat_add(request):
+
+    # Login Check Start
+    if not request.user.is_authenticated:
+        return redirect('mylogin')
+    # Login Check End
 
     cat = Cat.objects.all()
 

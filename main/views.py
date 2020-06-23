@@ -3,6 +3,8 @@ from .models import Main
 from news.models import News
 from cat.models import Cat
 from subcat.models import SubCat
+from django.contrib.auth import authenticate, login, logout
+
 
 # Create your views here. ACTIONS
 
@@ -27,5 +29,38 @@ def about(request):
 
 def panel(request):
 
+    # Login Check Start
+    if not request.user.is_authenticated:
+        return redirect('mylogin')
+    # Login Check End
 
     return render(request, 'back/home.html')
+
+
+def mylogin(request):
+
+    if request.method == 'POST':
+
+        utxt = request.POST.get('username')
+        ptxt = request.POST.get('password')
+
+        if utxt != "" and ptxt != "":
+
+            user = authenticate(username=utxt, password=ptxt)
+
+            if user != None:
+
+                login(request, user)
+                return redirect('panel')
+
+
+    return render(request, "front/login.html")
+
+
+def mylogout(request):
+
+    logout(request)
+    
+    return redirect('mylogin')
+
+

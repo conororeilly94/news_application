@@ -18,12 +18,21 @@ def news_detail(request, word):
 
 def news_list(request):
 
+    # Login Check Start
+    if not request.user.is_authenticated:
+        return redirect('mylogin')
+    # Login Check End
+
     news = News.objects.all()
 
     return render(request, 'back/news_list.html', {'news':news})
 
 def news_add(request):
 
+    # Login Check Start
+    if not request.user.is_authenticated:
+        return redirect('mylogin')
+    # Login Check End
     
     now = datetime.datetime.now()
 
@@ -109,6 +118,11 @@ def news_add(request):
 
 def news_delete(request, pk):
 
+    # Login Check Start
+    if not request.user.is_authenticated:
+        return redirect('mylogin')
+    # Login Check End
+
     try:
 
         b = News.objects.get(pk=pk)
@@ -138,6 +152,11 @@ def news_delete(request, pk):
 
 
 def news_edit(request, pk):
+
+    # Login Check Start
+    if not request.user.is_authenticated:
+        return redirect('mylogin')
+    # Login Check End
 
     if len(News.objects.filter(pk=pk)) == 0:
         
