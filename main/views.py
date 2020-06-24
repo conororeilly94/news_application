@@ -54,7 +54,7 @@ def panel(request):
 
 
 def mylogin(request):
-
+    
     if request.method == 'POST':
 
         utxt = request.POST.get('username')
@@ -70,7 +70,7 @@ def mylogin(request):
                 return redirect('panel')
 
 
-    return render(request, "front/login.html")
+    return render(request, 'front/login.html')
 
 
 def mylogout(request):
@@ -192,3 +192,59 @@ def contact(request):
 
 
     return render(request, 'front/contact.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'popnews2':popnews2, 'trending':trending})
+
+
+def change_pass(request):
+
+    # login check start
+    if not request.user.is_authenticated :
+        return redirect('mylogin')
+    # login check end
+
+    if request.method == 'POST' :
+
+        oldpass = request.POST.get('oldpass')
+        newpass = request.POST.get('newpass')
+
+        if oldpass == "" or newpass == "" :
+            error = "All Fields Requirded"
+            return render(request, 'back/error.html' , {'error':error})
+
+        user = authenticate(username=request.user, password=oldpass)
+
+        if user != None :
+
+            if len(newpass) < 8 :
+                error = "Your Password Most Be At Less 8 Character"
+                return render(request, 'back/error.html' , {'error':error})
+
+            count1 = 0
+            count2 = 0
+            count3 = 0 
+            count4 = 0
+
+            for i in newpass :
+
+                if i > "0" and i < "9" :
+                    count1 = 1
+                if i > "A" and i < "Z" :
+                    count2 = 1
+                if i > 'a' and i < 'z' :
+                    count3 = 1
+                if i > "!" and i < "(" :
+                    count4 = 1
+
+            if count1 == 1 and count2 == 1 and count3 == 1 and count4 == 1 :
+
+                user = User.objects.get(username=request.user)
+                user.set_password(newpass)
+                user.save()
+                return redirect('mylogout')
+
+        else:
+
+            error = "Your Password Is Not Correct"
+            return render(request, 'back/error.html' , {'error':error})
+
+
+    return render(request, 'back/changepass.html')
