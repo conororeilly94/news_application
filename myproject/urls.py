@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'', include('news.urls')),
     url(r'', include('cat.urls')),
     url(r'', include('subcat.urls')),
+    url(r'', include('contactform.urls')),
 ]
 
 if settings.DEBUG:
