@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'', include('cat.urls')),
     url(r'', include('subcat.urls')),
     url(r'', include('contactform.urls')),
+    url(r'', include('trending.urls')),
 ]
 
 if settings.DEBUG:
