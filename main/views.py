@@ -9,6 +9,7 @@ from trending.models import Trending
 from django.contrib.auth.models import User
 import random
 from random import randint
+from manager.models import Manager
 
 # Create your views here. ACTIONS
 
@@ -68,6 +69,61 @@ def mylogin(request):
 
                 login(request, user)
                 return redirect('panel')
+
+
+    return render(request, 'front/login.html')
+
+
+
+def myregister(request):
+    
+    
+    if request.method == 'POST':
+    
+        name = request.POST.get('name')
+        uname = request.POST.get('uname')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        if name == "" :
+            msg = "Input Your Name"
+            return render(request, 'front/msgbox.html', {'msg':msg})
+
+        
+        if password1 != password2 :
+            msg = "Your Pass Didn't Match"
+            return render(request, 'front/msgbox.html', {'msg':msg})
+
+        count1 = 0
+        count2 = 0
+        count3 = 0 
+        count4 = 0
+
+        for i in password1 :
+
+            if i > "0" and i < "9" :
+                count1 = 1
+            if i > "A" and i < "Z" :
+                count2 = 1
+            if i > 'a' and i < 'z' :
+                count3 = 1
+            if i > "!" and i < "@" :
+                count4 = 1
+
+        if count1 == 0 or count2 == 0 or count3 == 0 or count4 == 0 :
+            msg = "Your Password Is Not Strong Enough. Please Try Again."
+            return render(request, 'front/msgbox.html', {'msg':msg})
+
+        if len(password1) < 8 :
+            msg = "Your Pass Most Be 8 Character"
+            return render(request, 'front/msgbox.html', {'msg':msg})
+
+        if len(User.objects.filter(username=uname)) == 0 and len(User.objects.filter(email=email)) == 0:
+
+            user = User.objects.create_user(username=uname,email=email,password=password1)
+            b = Manager(name=name,utxt=uname,email=email)
+            b.save()
 
 
     return render(request, 'front/login.html')
@@ -231,7 +287,7 @@ def change_pass(request):
                     count2 = 1
                 if i > 'a' and i < 'z' :
                     count3 = 1
-                if i > "!" and i < "(" :
+                if i > "!" and i < "@" :
                     count4 = 1
 
             if count1 == 1 and count2 == 1 and count3 == 1 and count4 == 1 :
@@ -248,3 +304,4 @@ def change_pass(request):
 
 
     return render(request, 'back/changepass.html')
+
