@@ -1,5 +1,6 @@
  
 {% load static %}
+{% load extra_auth %}
 
 {% if user.is_authenticated %}
 
@@ -147,7 +148,7 @@
                                 <a href="/panel" class=" active"><i class="gi gi-stopwatch sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Dashboard</span></a>
                             </li>
 
-
+                            {% if request.user|has_group:"masteruser" %}
                             <li class="sidebar-header">
                                 <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
                                 <span class="sidebar-header-title">Site Settings</span>
@@ -165,6 +166,20 @@
                                 <a href="/panel/contactform" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Contact Forms</span></a>
                             </li>
 
+                            
+
+                            <li class="sidebar-header">
+                                <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
+                                <span class="sidebar-header-title">Permissions</span>
+                            </li>
+
+                            <li>
+                                <a href="/panel/manager/group/" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Group</span></a>
+                            </li>
+
+                            
+                            
+
                             <li class="sidebar-header">
                                 <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
                                 <span class="sidebar-header-title">Manager</span>
@@ -174,11 +189,14 @@
                                 <a href="/panel/manager/list/" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Manager List</span></a>
                             </li>
 
+                            {% endif %}
+
                             <li class="sidebar-header">
                                 <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
                                 <span class="sidebar-header-title">News Section</span>
                             </li>
 
+                            {% if request.user|has_group:"masteruser" %}
                             <li>
                                 <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Category</span></a>
                                 <ul>
@@ -192,9 +210,11 @@
                                 </ul>
                             </li>
 
+                            
                             <li>
                                 <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Subcategory</span></a>
                                 <ul>
+                                    
                                     <li>
                                         <a href="/panel/subcategory/add/">Add Subcategory</a>
                                     </li>
@@ -204,6 +224,8 @@
 
                                 </ul>
                             </li>
+
+                            {% endif %}
 
                             <li>
                                 <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">News</span></a>
@@ -218,9 +240,11 @@
                                 </ul>
                             </li>
 
+                            {% if request.user|has_group:"masteruser" %}
                             <li>
                                 <a href="/panel/trending/" class=""><i class="gi gi-show_big_thumbnails sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Trending</span></a>
                             </li>
+                            {% endif %}
 
                         </ul>
                         <!-- END Sidebar Navigation -->
