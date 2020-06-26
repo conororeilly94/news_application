@@ -5,7 +5,7 @@ from django.db import models
 
 
 class Manager(models.Model):
-
+    
     name = models.CharField(max_length=30)
     utxt = models.TextField()
     email = models.TextField(default="")
