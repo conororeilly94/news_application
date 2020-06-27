@@ -10,6 +10,7 @@ from django.contrib.auth.models import User, Group, Permission
 import random
 from random import randint
 from manager.models import Manager
+import string
 
 # Create your views here. ACTIONS
 
@@ -55,11 +56,24 @@ def panel(request):
     perms = Permission.objects.filter(user=request.user)
     for i in perms:
         if i.codename == "master_user": perm = 1
-
+    
+    '''
+    test = ['!', '@', '#', '$', '%']
+    rand = ""
+    for i in range(4):
+        rand = rand + random.choice(string.ascii_letters)
+        rand += random.choice(test)
+        rand += str(random.randint(0,9))
     
 
-    return render(request, 'back/home.html')
+    count = News.objects.count()
+    rand = News.objects.all()[randint(0,count-1)]
+    '''
 
+    rand = 123456443
+
+    return render(request, 'back/home.html', {'rand':rand})
+   
 
 def mylogin(request):
     

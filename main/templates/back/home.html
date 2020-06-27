@@ -1,6 +1,7 @@
 
 {% extends 'back/master.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block mainblock %}
 
@@ -69,6 +70,8 @@
     
 </div>
 <!-- END Mini Top Stats Row -->
+
+{{rand|intword}}
 
 {% endblock %}
 
