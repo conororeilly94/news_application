@@ -7,6 +7,7 @@ from subcat.models import SubCat
 from cat.models import Cat
 from trending.models import Trending
 import random
+from comment.models import Comment
 
 
 # Create your views here. ACTIONS
@@ -36,9 +37,13 @@ def news_detail(request, word):
     except:
 
         print("Can Not Add Show")
+
+    code = News.objects.get(name=word).pk
+    comment = Comment.objects.filter(news_id=code, status=1).order_by('-pk')[:3]
+    cmcount = len(comment)
     
 
-    return render(request, 'front/news_detail.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'shownews':shownews, 'popnews':popnews, 'popnews2':popnews2, 'tag':tag, 'trending':trending})
+    return render(request, 'front/news_detail.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'shownews':shownews, 'popnews':popnews, 'popnews2':popnews2, 'tag':tag, 'trending':trending, 'code':code, 'comment':comment, 'cmcount':cmcount})
 
 def news_detail_short(request,pk):
     
@@ -64,8 +69,7 @@ def news_detail_short(request,pk):
 
     except:
 
-        print("Can Not Add Show")
-    
+        print("Can Not Add Show")    
 
     return render(request, 'front/news_detail.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'shownews':shownews, 'popnews':popnews, 'popnews2':popnews2, 'tag':tag, 'trending':trending})
 
