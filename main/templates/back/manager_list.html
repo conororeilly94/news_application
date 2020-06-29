@@ -33,6 +33,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Username</th>
+                    <th>IP</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -44,6 +45,7 @@
                     <td>{{cc.name}}</td>
                     <td>{{cc.email}}</td>
                     <td>{{cc.utxt}}</td>
+                    <td>{{cc.ip}}</td>
                     <td class="text-center">
                         <div class="btn-group">
                             <a href="{%url 'users_groups' pk=cc.pk %}" data-toggle="tooltip" title="Groups" class="btn btn-xs btn-default"><i class="fa fa-pencil"> Groups</i></a>
