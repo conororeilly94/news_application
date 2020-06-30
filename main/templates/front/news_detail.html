@@ -1,7 +1,7 @@
 {% extends 'front/master.html' %}
 
 {% load static %}
-
+{% load qr_code %}
 
 
 {% block headblock %}
@@ -95,6 +95,10 @@
 
                     Link to Article: <a href="{%url 'news_detail_short' pk=i.rand %}">/urls/{{i.rand}}</a>
                     <br/><br/><br/>
+
+
+                        {% qr_from_text "Hello" size=15 border=6 %}
+
 
                     <div>
 
@@ -249,6 +253,21 @@
                                 {{tagname}}
                             </a>
                             {% endfor %}
+                        </div>	
+                    </div>
+                    <br/>
+
+                    <div>
+                        <div class="how2 how2-cl4 flex-s-c m-b-30">
+                            <h3 class="f1-m-2 cl3 tab01-title">
+                                QR Code
+                            </h3>
+                        </div>
+
+                        <div class="flex-wr-s-s m-rl--5">
+
+                            {% qr_from_text link size=20 border=6 %}
+
                         </div>	
                     </div>
                 </div>

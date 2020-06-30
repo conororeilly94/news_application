@@ -42,9 +42,11 @@ def news_detail(request, word):
     code = News.objects.get(name=word).pk
     comment = Comment.objects.filter(news_id=code, status=1).order_by('-pk')[:3]
     cmcount = len(comment)
+
+    link = "/urls/" + str(News.objects.get(name=word).rand)
     
 
-    return render(request, 'front/news_detail.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'shownews':shownews, 'popnews':popnews, 'popnews2':popnews2, 'tag':tag, 'trending':trending, 'code':code, 'comment':comment, 'cmcount':cmcount})
+    return render(request, 'front/news_detail.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'shownews':shownews, 'popnews':popnews, 'popnews2':popnews2, 'tag':tag, 'trending':trending, 'code':code, 'comment':comment, 'cmcount':cmcount, 'link':link})
 
 def news_detail_short(request,pk):
     
@@ -70,9 +72,11 @@ def news_detail_short(request,pk):
 
     except:
 
-        print("Can Not Add Show")    
+        print("Can Not Add Show")
 
-    return render(request, 'front/news_detail.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'shownews':shownews, 'popnews':popnews, 'popnews2':popnews2, 'tag':tag, 'trending':trending})
+    link = "/urls/" + str(News.objects.get(name=word).rand)
+
+    return render(request, 'front/news_detail.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'shownews':shownews, 'popnews':popnews, 'popnews2':popnews2, 'tag':tag, 'trending':trending, 'link':link})
 
 
 def news_list(request):
