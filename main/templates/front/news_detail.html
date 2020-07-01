@@ -62,7 +62,7 @@
                         
                         <div class="flex-wr-s-s p-b-40">
                             <span class="f1-s-3 cl8 m-r-15">
-                                <a href="#" class="f1-s-4 cl8 hov-cl10 trans-03">
+                                <a class="f1-s-4 cl8 hov-cl10 trans-03">
                                     by {{i.writer}}
                                 </a>
 
@@ -214,12 +214,12 @@
                                 <div class="size-w-11">
                                     <h6 class="p-b-4">
                                         <a href="{%url 'news_detail' word=pop.name %}" class="f1-s-5 cl3 hov-cl10 trans-03">
-                                            {{pop.name}}
+                                        {{pop.name}}
                                         </a>
                                     </h6>
 
                                     <span class="cl8 txt-center p-b-24">
-                                        <a href="{%url 'news_detail' word=pop.name %}" class="f1-s-6 cl8 hov-cl10 trans-03">
+                                        <a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
                                             {{pop.catname}}
                                         </a>
 
@@ -235,6 +235,8 @@
                             </li>
                             {% endif %}
                             {% endfor %}
+
+                        
                         </ul>
                     </div>
 

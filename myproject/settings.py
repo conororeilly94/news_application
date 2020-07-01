@@ -25,7 +25,7 @@ SECRET_KEY = '*q$!msa!*ry*0g0of_*j1!3$m_8egkg-i##h@f!u)7)3-e772*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -140,3 +140,10 @@ CRONJOBS = [
 
     ('*/5 * * * *' , 'main.cron.my_job')
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'mail.djangolearn.xyz'
+EMAIL_HOST_USER = 'sener@djangolearn.xyz'
+EMAIL_HOST_PASSWORD = 'admin!@#$5678'
+EMAIL_PORT = 587

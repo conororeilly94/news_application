@@ -120,11 +120,11 @@
 							{% for gg in cat %}
 							{% if gg.count != 0 %}
 							<li class="mega-menu-item">
-								<a href="category-01.html">{{gg.name}}</a>
+								<a href="{%url 'news_all_show' word=gg.name %}">{{gg.name}}</a>
 
 								<div class="sub-mega-menu">
 									<div class="nav flex-column nav-pills" role="tablist">
-										<a class="nav-link active" data-toggle="pill" href="#news-0" role="tab">All</a>
+										<a class="nav-link active" data-toggle="pill" href="{%url 'news_all_show' word=gg.name %}" role="tab">All</a>
 
 										{% for subcat in subcat %}
 										{% if subcat.catid == gg.pk %}
@@ -149,7 +149,7 @@
 
 														<div class="p-t-10">
 															<h5 class="p-b-5">
-																<a href="blog-detail-01.html" class="f1-s-5 cl3 hov-cl10 trans-03">
+																<a href="{%url 'news_detail' word=hh.name %}" class="f1-s-5 cl3 hov-cl10 trans-03">
 																	{{hh.name}}
 																</a>
 															</h5>
@@ -192,13 +192,13 @@
 
 														<div class="p-t-10">
 															<h5 class="p-b-5">
-																<a href="#" class="f1-s-5 cl3 hov-cl10 trans-03">
+																<a href="{%url 'news_detail' word=hh.name %}" class="f1-s-5 cl3 hov-cl10 trans-03">
 																	{{hh.name}}
 																</a>
 															</h5>
 
 															<span class="cl8">
-																<a href="{%url 'news_detail' word=hh.name %}" class="f1-s-6 cl8 hov-cl10 trans-03">
+																<a href="#" class="f1-s-6 cl8 hov-cl10 trans-03">
 																	{{hh.catname}}
 																</a>
 

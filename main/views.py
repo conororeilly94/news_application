@@ -13,6 +13,10 @@ from manager.models import Manager
 import string
 from ipware import get_client_ip
 from ip2geotools.databases.noncommercial import DbIpCity
+from blacklist.models import Blacklist
+from django.core.mail import send_mail
+from django.conf import settings
+from contactform.models import ContactForm
 
 # Create your views here. ACTIONS
 
@@ -20,14 +24,14 @@ from ip2geotools.databases.noncommercial import DbIpCity
 def home(request):
 
     site = Main.objects.get(pk=2)
-    news = News.objects.filter(act=1).order_by('-pk')
+    news = News.objects.filter(act=1).order_by('-pk') [:12] # Left of Categories and Underneath Categories`
     cat = Cat.objects.all()
     subcat = SubCat.objects.all()
-    lastnews = News.objects.filter(act=1).order_by('-pk')[:3]
-    popnews = News.objects.filter(act=1).order_by('-views')
-    popnews2 = News.objects.filter(act=1).order_by('-views')[:3]
+    lastnews = News.objects.filter(act=1).order_by('-pk')[:3] # Top Page
+    popnews = News.objects.filter(act=1).order_by('-views')[:12] # Right of Categories
+    popnews2 = News.objects.filter(act=1).order_by('-views')[:3] # Bottom
     trending = Trending.objects.all().order_by('-pk')[:5]
-    lastnews2 = News.objects.filter(act=1).order_by('-pk')[:4]
+    lastnews2 = News.objects.filter(act=1).order_by('-pk')[:4] # Below Top
 
     return render(request, 'front/home.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'popnews':popnews, 'popnews2':popnews2, 'trending':trending, 'lastnews2':lastnews2})
 
@@ -353,4 +357,37 @@ def change_pass(request):
 
 
     return render(request, 'back/changepass.html')
+
+
+def answer_cm(request,pk):
+
+    if request.method == 'POST':
+
+        txt = request.POST.get('txt')
+
+        if txt == "":
+            error = "Type Your Answer"
+            return render(request, 'back/error.html' , {'error':error})
+
+        to_email = ContactForm.objects.get(pk=pk).email
+        
+        '''
+        subject = 'Answer Form'
+        message = txt
+        email_from = settings.EMAIL_HOST_USER
+        emails = [to_email]
+        send_mail(subject,message,email_from,emails)
+        '''
+
+        '''
+        send_email(
+            'Sender Number 2',
+            txt,
+            'sender@djangolearn.xyz',
+            [to_email],
+            fail_silently = False,
+        )
+        '''
+
+    return render(request, 'back/answer_cm.html', {'pk':pk})
 

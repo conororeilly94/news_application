@@ -16,13 +16,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def news_detail(request, word):
     
     site = Main.objects.get(pk=2)
-    news = News.objects.all().order_by('-pk')
+    news = News.objects.all().order_by('-pk')[:10]
     cat = Cat.objects.all()
     subcat = SubCat.objects.all()
     lastnews = News.objects.all().order_by('-pk')[:3]
 
     shownews = News.objects.filter(name=word)
-    popnews = News.objects.all().order_by('-views')
+    popnews = News.objects.all().order_by('-views')[:10]
     popnews2 = News.objects.all().order_by('-views')[:3]
     trending = Trending.objects.all().order_by('-pk')[:5]
 
@@ -94,7 +94,7 @@ def news_list(request):
         news = News.objects.filter(writer=request.user)
     elif perm == 1:
         newss = News.objects.all()
-        paginator = Paginator(newss,3)
+        paginator = Paginator(newss,10)
         page = request.GET.get('page')
 
         try:
