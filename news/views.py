@@ -9,7 +9,11 @@ from trending.models import Trending
 import random
 from comment.models import Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from itertools import chain
 
+
+
+mysearch = ""
 
 # Create your views here. ACTIONS
 
@@ -393,4 +397,100 @@ def news_all_show(request,word):
     trending = Trending.objects.all().order_by('-pk')[:5]
     lastnews2 = News.objects.filter(act=1).order_by('-pk')[:4]
 
+    # paginator = Paginator(allnews,12)
+    # page = request.GET.page('page')
+
+    # try:
+    #     allnews = paginator.page(page)
+
+    # except EmptyPage:
+    #     allnews = paginator.page(paginator.num_page)
+
+    # except PageNotAnInteger:
+    #     allnews = paginator.page(1)
+
     return render(request, 'front/all_news.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'popnews':popnews, 'popnews2':popnews2, 'trending':trending, 'lastnews2':lastnews2, 'allnews':allnews})
+
+
+def all_news(request):
+    
+    allnews = News.objects.filter()
+
+    site = Main.objects.get(pk=2)
+    news = News.objects.filter(act=1).order_by('-pk')
+    cat = Cat.objects.all()
+    subcat = SubCat.objects.all()
+    lastnews = News.objects.filter(act=1).order_by('-pk')[:3]
+    popnews = News.objects.filter(act=1).order_by('-views')
+    popnews2 = News.objects.filter(act=1).order_by('-views')[:3]
+    trending = Trending.objects.all().order_by('-pk')[:5]
+    lastnews2 = News.objects.filter(act=1).order_by('-pk')[:4]
+
+    # paginator = Paginator(allnews,12)
+    # page = request.GET.page('page')
+
+    # try:
+    #     allnews = paginator.page(page)
+
+    # except EmptyPage:
+    #     allnews = paginator.page(paginator.num_page)
+
+    # except PageNotAnInteger:
+    #     allnews = paginator.page(1)
+
+    return render(request, 'front/all_news_2.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'popnews':popnews, 'popnews2':popnews2, 'trending':trending, 'lastnews2':lastnews2, 'allnews':allnews})
+
+
+def all_news_search(request):
+
+    if request.method == 'POST':
+
+        txt = request.POST.get('txt')
+        mysearch = txt
+    
+        a = News.objects.filter(name__contains=txt)
+        b = News.objects.filter(short_txt__contains=txt)
+        c = News.objects.filter(body__contains=txt)    
+
+        # Merge queries a, b and c
+        allnews = list(chain(a,b,c))
+        # Deletes repetitive data
+        allnews = list(dict.fromkeys(allnews))
+
+    else:
+
+        a = News.objects.filter(name__contains=mysearch)
+        b = News.objects.filter(short_txt__contains=mysearch)
+        c = News.objects.filter(body__contains=mysearch)    
+
+        # Merge queries a, b and c
+        allnews = list(chain(a,b,c))
+        # Deletes repetitive data
+        allnews = list(dict.fromkeys(allnews))
+
+
+    site = Main.objects.get(pk=2)
+    news = News.objects.filter(act=1).order_by('-pk')
+    cat = Cat.objects.all()
+    subcat = SubCat.objects.all()
+    lastnews = News.objects.filter(act=1).order_by('-pk')[:3]
+    popnews = News.objects.filter(act=1).order_by('-views')
+    popnews2 = News.objects.filter(act=1).order_by('-views')[:3]
+    trending = Trending.objects.all().order_by('-pk')[:5]
+    lastnews2 = News.objects.filter(act=1).order_by('-pk')[:4]
+
+
+
+    # paginator = Paginator(allnews,12)
+    # page = request.GET.page('page')
+
+    # try:
+    #     allnews = paginator.page(page)
+
+    # except EmptyPage:
+    #     allnews = paginator.page(paginator.num_page)
+
+    # except PageNotAnInteger:
+    #     allnews = paginator.page(1)
+
+    return render(request, 'front/all_news_2.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'popnews':popnews, 'popnews2':popnews2, 'trending':trending, 'lastnews2':lastnews2, 'allnews':allnews})
