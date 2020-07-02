@@ -56,10 +56,14 @@
         <h2><strong>Emails</strong> List</h2>
     </div>
     
+    <form action="{%url 'check_mychecklist' %}" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered" >
+        {% csrf_token %}
     <div class="table-responsive">
+    
         <table id="example-datatable" class="table table-vcenter table-condensed table-bordered">
             <thead>
                 <tr>
+                    <th>&nbsp</th>
                     <th class="text-center">ID</th>
                     <th>Email</th>
                     <th class="text-center">Actions</th>
@@ -69,6 +73,8 @@
 
                 {% for cc in emails %}
                 <tr>
+                    <!-- <td><input type="checkbox" name="{{cc.pk}}" id="check"></td> -->
+                    <td><input type="checkbox" name="checks[]" value="{{cc.pk}}"></td>
                     <td class="text-center">{{cc.pk}}</td>
                     <td>{{cc.txt}}</td>
                     
@@ -81,7 +87,14 @@
                 {% endfor %}                
             </tbody>
         </table>
+       
     </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Submit</button>
+        </div>
+    </div>
+    </form>
 </div>
 <!-- END Datatables Content -->
 

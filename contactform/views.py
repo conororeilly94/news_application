@@ -70,3 +70,4 @@ def contact_del(request, pk):
     b.delete()
 
     return redirect('contact_show')
+

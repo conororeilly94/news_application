@@ -6,10 +6,26 @@
 
 {% block headblock %}
 <title>{{site.name}} | All</title>
+
+
+
 {% endblock %}
 
 
+<script>
 
+    function Num(x) {
+        if (window.event) {var key = window.event.keyCode;}
+        else if (x) {key = x.which;}
+        else {return true;}
+        var keychar = String.fromCharCode(key);
+        keychar.toLowerCase();
+        if(key == (null || 0 || 8 || 13 || 27) || ("0123456789").indexOf(keychar) > -1) {return true;}
+        if(key == ("9").indexOf(keychar) > -1) {return true;}
+        else {return false;}
+    }
+
+</script>
 
 
 {% block mainblock %}
@@ -21,7 +37,7 @@
 
             <form action="{%url 'all_news_search' %}" method="POST">
                 {% csrf_token %}
-                <input class="bo-1-rad-3 bocl13 size-a-19 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="txt" name="txt" placeholder="Input Your Search...">
+                <input class="bo-1-rad-3 bocl13 size-a-19 f1-s-13 cl5 plh6 p-rl-18 m-b-20" onkeypress="return Num(event);" type="txt" name="txt" placeholder="Input Your Search...">
                 <button type="submit" class="size-a-20 bg1 borad-2 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-20">
                     Search
                 </button>
