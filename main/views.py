@@ -22,6 +22,8 @@ import requests
 import json
 from django.views.decorators.csrf import csrf_exempt
 from bs4 import BeautifulSoup
+from rest_framework import viewsets
+from .serializer import NewsSerializer
 
 # Create your views here. ACTIONS
 
@@ -434,3 +436,8 @@ def answer_cm(request,pk):
 
     return render(request, 'back/answer_cm.html', {'pk':pk})
 
+
+class NewsViewSet(viewsets.ModelViewSet):
+
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer

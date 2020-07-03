@@ -8,6 +8,12 @@ from django.conf import settings
 from django.contrib.sitemaps.views import sitemap
 from main.sitemap import MyNewsSiteMap
 
+from rest_framework import routers
+from main import views
+
+router = routers.DefaultRouter()
+router.register(r'mynews', views.NewsViewSet)
+
 sitemaps = {
 
     'news': MyNewsSiteMap(),
@@ -16,6 +22,9 @@ sitemaps = {
 urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
+
+    url(r'rest/', include(router.urls)),
+    url(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     url(r'^sitemap\.xml$', sitemap, {'sitemaps':sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
