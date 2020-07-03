@@ -17,10 +17,15 @@ from blacklist.models import Blacklist
 from django.core.mail import send_mail
 from django.conf import settings
 from contactform.models import ContactForm
+from zeep import Client
+import requests
+import json
+from django.views.decorators.csrf import csrf_exempt
+from bs4 import BeautifulSoup
 
 # Create your views here. ACTIONS
 
-
+@csrf_exempt
 def home(request):
 
     site = Main.objects.get(pk=2)
@@ -32,6 +37,38 @@ def home(request):
     popnews2 = News.objects.filter(act=1).order_by('-views')[:3] # Bottom
     trending = Trending.objects.all().order_by('-pk')[:5]
     lastnews2 = News.objects.filter(act=1).order_by('-pk')[:4] # Below Top
+
+    # SOAP
+    # client = Client('xxxxxxxx.wsdl')
+    # result = client.service.funcname(1,2,3)
+    # print(result)
+
+
+    # Curl
+    # url = 'xxxxxxxxxxxxx'
+    # payload = {'a':"b", 'c':"d"}
+    # result = requests.post(url, params=payload)
+    # print(result.url)
+    # print(result)
+
+    # JSON
+    # url = 'xxxxxxxxxxxxx'
+    # data = {'a':"b", 'c':"d"}
+    # headers = {'Content-Type':'application/json', 'API_KEY':'xxxxxxxxxxxx'}
+    # result = requests.post(url,data=json.dumps(data),headers=headers)
+    # print(result)
+
+    # return redirect('https://xxxxxx')
+
+    # my_html = """
+
+    # <title> This is a Test </title>
+
+    # """
+
+    # soup = BeautifulSoup(my_html, 'html.parser')
+    # print(soup.title)
+    # print(soup.title.string)
 
     return render(request, 'front/home.html', {'site':site, 'news':news, 'cat':cat, 'subcat':subcat, 'lastnews':lastnews, 'popnews':popnews, 'popnews2':popnews2, 'trending':trending, 'lastnews2':lastnews2})
 
@@ -197,6 +234,8 @@ def site_setting(request):
         yt = request.POST.get('yt')
         link = request.POST.get('link')
         txt = request.POST.get('txt')
+        seo_txt = request.POST.get('seotxt')
+        seo_keywords = request.POST.get('seokeyword')
 
         if fb == "": fb = "#"
         if tw == "": tw = "#"
@@ -245,6 +284,10 @@ def site_setting(request):
         b.yt = yt
         b.link = link
         b.about = txt
+
+        b.seo_txt = seo_txt
+        b.seo_keywords = seo_keywords
+
         if picurl != "-": b.picurl = picurl
         if picname != "-": b.picname = picname
         if picurl2 != "-": b.picurl2 = picurl2

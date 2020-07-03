@@ -5,18 +5,19 @@
 
 
 {% block headblock %}
-<title>{{site.name}} | News Detail</title>
+{% for i in shownews %}
+<title>{{site.name}} | {{i.name}}</title>
+{% endfor %}
+<meta charset="UTF-8">
+<meta name="description" content="{{site.seo_txt}}">
+<meta name="keywords" content="{{tagname}}">
+
 {% endblock %}
-
-
-
-
 
 {% block mainblock %}
 
 
 {% for i in shownews %}
-
 
 <!-- Breadcrumb -->
 <div class="container">
