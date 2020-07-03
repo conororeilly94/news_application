@@ -40,7 +40,34 @@
 
             <form action="{%url 'all_news_search' %}" method="POST">
                 {% csrf_token %}
-                <input class="bo-1-rad-3 bocl13 size-a-19 f1-s-13 cl5 plh6 p-rl-18 m-b-20" onkeypress="return Num(event);" type="txt" name="txt" placeholder="Input Your Search...">
+                <!-- <input class="bo-1-rad-3 bocl13 size-a-19 f1-s-13 cl5 plh6 p-rl-18 m-b-20" onkeypress="return Num(event);" type="txt" name="txt" placeholder="Input Your Search..."> -->
+                
+                <input class="bo-1-rad-3 bocl13 size-a-19 f1-s-13 cl5 plh6 p-rl-18 m-b-20" type="txt" name="txt" placeholder="Input Your Search...">
+                
+                <select id="cat" name="cat" class="select-chosen" data-placeholder="Choose a Subcategory.." style="width: 250px;">
+                    <option value="0">All News</option>
+                    {% for i in cat%}
+                    <option value="{{i.pk}}">{{i.name}}</option>
+                    {% endfor %}
+                </select>   
+                
+                <br/><br/>
+                
+                <select id="from" name="from" class="select-chosen" data-placeholder="Choose a Subcategory.." style="width: 250px;">
+                    <option value="0">From</option>
+                    {% for i in f_rom %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                </select>  
+
+                <select id="to" name="to" class="select-chosen" data-placeholder="Choose a Subcategory.." style="width: 250px;">
+                    <option value="0">To</option>
+                    {% for i in t_o %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                </select>  
+
+                <br/><br/>
                 <button type="submit" class="size-a-20 bg1 borad-2 f1-s-12 cl0 hov-btn1 trans-03 p-rl-15 m-t-20">
                     Search
                 </button>
